@@ -4,7 +4,7 @@
 // - protoc             v5.29.3
 // source: shop_product.proto
 
-package pkg
+package shop_product
 
 import (
 	context "context"
