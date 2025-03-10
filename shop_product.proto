@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package shop_product;
 
-option go_package = "github.com/milo1150/cart-demo-proto;cart_demo_proto";
+option go_package = "/pkg";
 
 service ShopProductService {
   rpc GetProduct(GetProductRequest) returns (GetProductResponse);
