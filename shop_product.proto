@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package shop_product;
+
+option go_package = "github.com/milo1150/cart-demo-grpc";
+
+service ShopProductService {
+  rpc GetProduct(GetProductRequest) returns (GetProductResponse);
+}
+
+message GetProductRequest { string shop_id = 1; }
+
+message GetProductResponse {
+  uint64 id = 1;
+  string product_name = 2;
+  float price = 3;
+  uint64 stock = 4;
+  uint64 shop_id = 5;
+}
