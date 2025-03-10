@@ -8,12 +8,12 @@ service ShopProductService {
   rpc GetProduct(GetProductRequest) returns (GetProductResponse);
 }
 
-message GetProductRequest { string shop_id = 1; }
+message GetProductRequest { uint64 product_id = 1; }
 
 message GetProductResponse {
   uint64 id = 1;
   string product_name = 2;
-  float price = 3;
+  double price = 3;
   uint64 stock = 4;
   uint64 shop_id = 5;
 }
