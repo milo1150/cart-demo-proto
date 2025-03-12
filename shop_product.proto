@@ -6,10 +6,11 @@ option go_package = "/pkg/shop_product";
 
 service ShopProductService {
   rpc GetProduct(GetProductRequest) returns (GetProductResponse);
+  rpc ProductExists(CheckProductRequest) returns (CheckProductReponse);
+  rpc ShopExists(CheckShopRequest) returns (CheckShopReponse);
 }
 
 message GetProductRequest { uint64 product_id = 1; }
-
 message GetProductResponse {
   uint64 id = 1;
   string product_name = 2;
@@ -17,3 +18,9 @@ message GetProductResponse {
   uint64 stock = 4;
   uint64 shop_id = 5;
 }
+
+message CheckProductRequest { uint64 product_id = 1; }
+message CheckProductReponse { bool is_exists = 1; }
+
+message CheckShopRequest { uint64 shop_id = 1; }
+message CheckShopReponse { bool is_exists = 1; }
