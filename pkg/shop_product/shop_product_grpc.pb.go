@@ -20,6 +20,7 @@ const _ = grpc.SupportPackageIsVersion9
 
 const (
 	ShopProductService_GetProduct_FullMethodName    = "/shop_product.ShopProductService/GetProduct"
+	ShopProductService_GetProducts_FullMethodName   = "/shop_product.ShopProductService/GetProducts"
 	ShopProductService_ProductExists_FullMethodName = "/shop_product.ShopProductService/ProductExists"
 	ShopProductService_ShopExists_FullMethodName    = "/shop_product.ShopProductService/ShopExists"
 )
@@ -29,6 +30,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ShopProductServiceClient interface {
 	GetProduct(ctx context.Context, in *GetProductRequest, opts ...grpc.CallOption) (*GetProductResponse, error)
+	GetProducts(ctx context.Context, in *GetProductsRequest, opts ...grpc.CallOption) (*GetProductsResponse, error)
 	ProductExists(ctx context.Context, in *CheckProductRequest, opts ...grpc.CallOption) (*CheckProductReponse, error)
 	ShopExists(ctx context.Context, in *CheckShopRequest, opts ...grpc.CallOption) (*CheckShopReponse, error)
 }
@@ -45,6 +47,16 @@ func (c *shopProductServiceClient) GetProduct(ctx context.Context, in *GetProduc
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(GetProductResponse)
 	err := c.cc.Invoke(ctx, ShopProductService_GetProduct_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *shopProductServiceClient) GetProducts(ctx context.Context, in *GetProductsRequest, opts ...grpc.CallOption) (*GetProductsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetProductsResponse)
+	err := c.cc.Invoke(ctx, ShopProductService_GetProducts_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -76,6 +88,7 @@ func (c *shopProductServiceClient) ShopExists(ctx context.Context, in *CheckShop
 // for forward compatibility.
 type ShopProductServiceServer interface {
 	GetProduct(context.Context, *GetProductRequest) (*GetProductResponse, error)
+	GetProducts(context.Context, *GetProductsRequest) (*GetProductsResponse, error)
 	ProductExists(context.Context, *CheckProductRequest) (*CheckProductReponse, error)
 	ShopExists(context.Context, *CheckShopRequest) (*CheckShopReponse, error)
 	mustEmbedUnimplementedShopProductServiceServer()
@@ -90,6 +103,9 @@ type UnimplementedShopProductServiceServer struct{}
 
 func (UnimplementedShopProductServiceServer) GetProduct(context.Context, *GetProductRequest) (*GetProductResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetProduct not implemented")
+}
+func (UnimplementedShopProductServiceServer) GetProducts(context.Context, *GetProductsRequest) (*GetProductsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetProducts not implemented")
 }
 func (UnimplementedShopProductServiceServer) ProductExists(context.Context, *CheckProductRequest) (*CheckProductReponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ProductExists not implemented")
@@ -132,6 +148,24 @@ func _ShopProductService_GetProduct_Handler(srv interface{}, ctx context.Context
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ShopProductServiceServer).GetProduct(ctx, req.(*GetProductRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ShopProductService_GetProducts_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetProductsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ShopProductServiceServer).GetProducts(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ShopProductService_GetProducts_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ShopProductServiceServer).GetProducts(ctx, req.(*GetProductsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -182,6 +216,10 @@ var ShopProductService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetProduct",
 			Handler:    _ShopProductService_GetProduct_Handler,
+		},
+		{
+			MethodName: "GetProducts",
+			Handler:    _ShopProductService_GetProducts_Handler,
 		},
 		{
 			MethodName: "ProductExists",

@@ -6,6 +6,7 @@ option go_package = "/pkg/shop_product";
 
 service ShopProductService {
   rpc GetProduct(GetProductRequest) returns (GetProductResponse);
+  rpc GetProducts(GetProductsRequest) returns (GetProductsResponse);
   rpc ProductExists(CheckProductRequest) returns (CheckProductReponse);
   rpc ShopExists(CheckShopRequest) returns (CheckShopReponse);
 }
@@ -19,6 +20,9 @@ message GetProductResponse {
   uint64 stock = 5;
   uint64 shop_id = 6;
 }
+
+message GetProductsRequest { repeated uint64 product_ids = 1; } // []uint64
+message GetProductsResponse { repeated GetProductResponse products = 1; }
 
 message CheckProductRequest { uint64 product_id = 1; }
 message CheckProductReponse { bool is_exists = 1; }
