@@ -19,7 +19,9 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	ShopProductService_GetProduct_FullMethodName = "/shop_product.ShopProductService/GetProduct"
+	ShopProductService_GetProduct_FullMethodName    = "/shop_product.ShopProductService/GetProduct"
+	ShopProductService_ProductExists_FullMethodName = "/shop_product.ShopProductService/ProductExists"
+	ShopProductService_ShopExists_FullMethodName    = "/shop_product.ShopProductService/ShopExists"
 )
 
 // ShopProductServiceClient is the client API for ShopProductService service.
@@ -27,6 +29,8 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ShopProductServiceClient interface {
 	GetProduct(ctx context.Context, in *GetProductRequest, opts ...grpc.CallOption) (*GetProductResponse, error)
+	ProductExists(ctx context.Context, in *CheckProductRequest, opts ...grpc.CallOption) (*CheckProductReponse, error)
+	ShopExists(ctx context.Context, in *CheckShopRequest, opts ...grpc.CallOption) (*CheckShopReponse, error)
 }
 
 type shopProductServiceClient struct {
@@ -47,11 +51,33 @@ func (c *shopProductServiceClient) GetProduct(ctx context.Context, in *GetProduc
 	return out, nil
 }
 
+func (c *shopProductServiceClient) ProductExists(ctx context.Context, in *CheckProductRequest, opts ...grpc.CallOption) (*CheckProductReponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(CheckProductReponse)
+	err := c.cc.Invoke(ctx, ShopProductService_ProductExists_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *shopProductServiceClient) ShopExists(ctx context.Context, in *CheckShopRequest, opts ...grpc.CallOption) (*CheckShopReponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(CheckShopReponse)
+	err := c.cc.Invoke(ctx, ShopProductService_ShopExists_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ShopProductServiceServer is the server API for ShopProductService service.
 // All implementations must embed UnimplementedShopProductServiceServer
 // for forward compatibility.
 type ShopProductServiceServer interface {
 	GetProduct(context.Context, *GetProductRequest) (*GetProductResponse, error)
+	ProductExists(context.Context, *CheckProductRequest) (*CheckProductReponse, error)
+	ShopExists(context.Context, *CheckShopRequest) (*CheckShopReponse, error)
 	mustEmbedUnimplementedShopProductServiceServer()
 }
 
@@ -64,6 +90,12 @@ type UnimplementedShopProductServiceServer struct{}
 
 func (UnimplementedShopProductServiceServer) GetProduct(context.Context, *GetProductRequest) (*GetProductResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetProduct not implemented")
+}
+func (UnimplementedShopProductServiceServer) ProductExists(context.Context, *CheckProductRequest) (*CheckProductReponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ProductExists not implemented")
+}
+func (UnimplementedShopProductServiceServer) ShopExists(context.Context, *CheckShopRequest) (*CheckShopReponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ShopExists not implemented")
 }
 func (UnimplementedShopProductServiceServer) mustEmbedUnimplementedShopProductServiceServer() {}
 func (UnimplementedShopProductServiceServer) testEmbeddedByValue()                            {}
@@ -104,6 +136,42 @@ func _ShopProductService_GetProduct_Handler(srv interface{}, ctx context.Context
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ShopProductService_ProductExists_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CheckProductRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ShopProductServiceServer).ProductExists(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ShopProductService_ProductExists_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ShopProductServiceServer).ProductExists(ctx, req.(*CheckProductRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ShopProductService_ShopExists_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CheckShopRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ShopProductServiceServer).ShopExists(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ShopProductService_ShopExists_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ShopProductServiceServer).ShopExists(ctx, req.(*CheckShopRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ShopProductService_ServiceDesc is the grpc.ServiceDesc for ShopProductService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -114,6 +182,14 @@ var ShopProductService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetProduct",
 			Handler:    _ShopProductService_GetProduct_Handler,
+		},
+		{
+			MethodName: "ProductExists",
+			Handler:    _ShopProductService_ProductExists_Handler,
+		},
+		{
+			MethodName: "ShopExists",
+			Handler:    _ShopProductService_ShopExists_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
