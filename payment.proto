@@ -4,17 +4,22 @@ package payment;
 
 option go_package = "/pkg/payment";
 
-enum Enum {
-  PENDING = 0;
-}
-
-message GetPaymentRequest { uint64 payment_order_id = 1; }
-message GetPaymentResponse {
+// Single
+message GetPaymentOrderRequest { uint64 payment_order_id = 1; }
+message GetPaymentOrderResponse {
   uint64 id = 1;
   float total = 2;
   string status = 3;
 }
 
+// List
+message GetPaymentOrderListRequest { repeated uint64 payment_order_ids = 1; }
+message GetPaymentOrderListResponse {
+  repeated GetPaymentOrderResponse payment_orders = 1;
+}
+
 service PaymentService {
-  rpc GetPayment(GetPaymentRequest) returns (GetPaymentResponse);
+  rpc GetPayment(GetPaymentOrderRequest) returns (GetPaymentOrderResponse);
+  rpc GetPayments(GetPaymentOrderListRequest)
+      returns (GetPaymentOrderListResponse);
 }
