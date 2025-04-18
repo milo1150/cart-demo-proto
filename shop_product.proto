@@ -23,6 +23,7 @@ message GetProductResponse {
   double price = 4;
   uint64 stock = 5;
   ShopDetail shop = 6;
+  string image = 7;
 }
 
 message GetProductsRequest { repeated uint64 product_ids = 1; } // []uint64
