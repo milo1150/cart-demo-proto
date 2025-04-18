@@ -12,7 +12,7 @@ service ShopProductService {
 }
 
 message GetProductRequest { uint64 product_id = 1; }
-message ProductDetail {
+message ShopDetail {
   uint64 id = 1;
   string name = 2;
 }
@@ -22,7 +22,7 @@ message GetProductResponse {
   string description = 3;
   double price = 4;
   uint64 stock = 5;
-  ProductDetail shop = 6;
+  ShopDetail shop = 6;
 }
 
 message GetProductsRequest { repeated uint64 product_ids = 1; } // []uint64
