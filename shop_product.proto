@@ -12,13 +12,17 @@ service ShopProductService {
 }
 
 message GetProductRequest { uint64 product_id = 1; }
+message ProductDetail {
+  uint64 id = 1;
+  string name = 2;
+}
 message GetProductResponse {
   uint64 id = 1;
   string name = 2;
   string description = 3;
   double price = 4;
   uint64 stock = 5;
-  uint64 shop_id = 6;
+  ProductDetail shop = 6;
 }
 
 message GetProductsRequest { repeated uint64 product_ids = 1; } // []uint64
